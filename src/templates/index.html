@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kannada Character Recognition</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        #preview { max-width: 300px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Kannada Character Recognition</h1>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" accept=".jpg,.jpeg,.png,.bmp">
+        <button type="submit">Upload and Predict</button>
+    </form>
+
+    <div id="result">
+        <img id="preview" src="" style="display:none;">
+        <p id="predictionText"></p>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#uploadForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                var formData = new FormData(this);
+                
+                $.ajax({
+                    url: '/process',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#preview').attr('src', '/static/uploads/' + response.filename).show();
+                        $('#predictionText').text('Predicted Character: ' + response.predicted_character);
+                    },
+                    error: function(xhr) {
+                        alert('Error: ' + xhr.responseJSON.error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
