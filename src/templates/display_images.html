@@ -1,20 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display Images</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BrahmiLipi AI - History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            min-height: 100dvh;
+            background: #fef9ee;
+            color: #1d1c15;
+            font-family: Inter, sans-serif;
+        }
+        .glass-card {
+            background: rgba(254, 249, 238, 0.72);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(200, 155, 60, 0.18);
+            box-shadow: 0 20px 40px rgba(93, 64, 55, 0.08);
+        }
+        .brahmi-pattern {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-blend-mode: multiply;
+        }
+    </style>
 </head>
-<body>
-    <h1>Uploaded Images</h1>
-    <div>
-        {% for image in images %}
-            <div style="display:inline-block; margin:10px;">
-                <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="{{ image }}" style="width: 150px; height: auto;">
-                <p>{{ image }}</p>
-            </div>
-        {% endfor %}
-    </div>
-    <a href="/">Go Back</a>
+<body class="brahmi-pattern">
+<header class="sticky top-0 z-50 border-b border-outline/15 bg-surface/80 backdrop-blur-xl">
+<div class="mx-auto flex h-20 max-w-[1280px] items-center justify-between px-6">
+<div>
+<p class="text-xs font-semibold tracking-[0.24em] text-primary">BRAHMILIPI AI</p>
+<h1 class="font-[Manrope] text-2xl font-extrabold text-primary">Uploaded Images</h1>
+</div>
+<a class="rounded-xl border border-primary/20 bg-primary/10 px-4 py-2 font-[Manrope] font-semibold text-primary transition-colors hover:bg-primary/15" href="{{ url_for('index') }}">Back to Home</a>
+</div>
+</header>
+<main class="mx-auto max-w-[1280px] px-6 py-10">
+<section class="glass-card rounded-[32px] p-6 md:p-8">
+<div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+<div>
+<p class="text-xs font-semibold tracking-[0.24em] text-secondary">HISTORY</p>
+<h2 class="font-[Manrope] text-3xl font-extrabold text-primary md:text-4xl">Recent uploads and labels</h2>
+</div>
+<p class="max-w-2xl text-sm leading-6 text-on-surface-variant md:text-base">This archive shows the images stored by the app along with the mapping label used for each sample.</p>
+</div>
+
+{% if images %}
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for image in images %}
+    <article class="overflow-hidden rounded-[28px] border border-outline-variant/30 bg-surface-container-low shadow-[0_16px_32px_rgba(93,64,55,0.08)]">
+        <div class="aspect-[4/3] bg-surface-container-high">
+            <img src="{{ url_for('static', filename='uploads/' + image.filename + '.jpg') }}" alt="{{ image.label }}" class="h-full w-full object-cover"/>
+        </div>
+        <div class="space-y-2 p-5">
+            <p class="text-xs font-semibold tracking-[0.24em] text-secondary">{{ image.filename }}</p>
+            <h3 class="font-[Manrope] text-xl font-bold text-primary">{{ image.label }}</h3>
+            <p class="text-sm text-on-surface-variant">Prediction source</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="rounded-[28px] border border-dashed border-outline-variant/50 bg-surface-container-low p-10 text-center">
+    <p class="font-[Manrope] text-2xl font-bold text-primary">No uploaded images found</p>
+    <p class="mt-2 text-on-surface-variant">Upload an image from the home page to populate this history view.</p>
+</div>
+{% endif %}
+</section>
+</main>
 </body>
 </html>

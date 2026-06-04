@@ -1,8 +1,5 @@
 import os
 import json
-import cv2
-import numpy as np
-import tensorflow as tf
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
 
@@ -28,6 +25,9 @@ def preprocess_image_for_model(image_path, target_size=(64, 64)):
     """
     Preprocess uploaded image to match model's expected input
     """
+    import cv2
+    import numpy as np
+
     # Read image in grayscale
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     

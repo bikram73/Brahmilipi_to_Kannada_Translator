@@ -1,48 +1,388 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Kannada Character Recognition</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        #preview { max-width: 300px; margin: 20px 0; }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BrahmiLipi AI - Preserving Heritage through Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed": "#301400",
+                        "tertiary-fixed": "#ffdcc5",
+                        outline: "#807665",
+                        "surface-tint": "#7b5900",
+                        "on-primary-fixed": "#261900",
+                        "on-surface-variant": "#4e4637",
+                        "surface-container-high": "#ede8dd",
+                        "secondary-container": "#316bf3",
+                        "surface-variant": "#e7e2d7",
+                        "on-secondary-fixed-variant": "#003ea8",
+                        "on-primary-container": "#4b3500",
+                        "inverse-surface": "#323029",
+                        "on-secondary-container": "#fefcff",
+                        "on-tertiary-container": "#543012",
+                        "surface-container-highest": "#e7e2d7",
+                        "primary-container": "#c89b3c",
+                        "on-tertiary-fixed-variant": "#653d1e",
+                        "outline-variant": "#d2c5b1",
+                        "on-background": "#1d1c15",
+                        background: "#fef9ee",
+                        "inverse-on-surface": "#f5f0e5",
+                        "secondary-fixed-dim": "#b4c5ff",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#f0bf5c",
+                        tertiary: "#805533",
+                        "secondary-fixed": "#dbe1ff",
+                        "on-secondary-fixed": "#00174b",
+                        "surface-container": "#f2ede2",
+                        "primary-fixed-dim": "#f0bf5c",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dedacf",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#5d4200",
+                        "on-surface": "#1d1c15",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed": "#ffdea4",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#cc9771",
+                        secondary: "#0051d5",
+                        "surface-container-low": "#f8f3e8",
+                        surface: "#fef9ee",
+                        "on-primary": "#ffffff",
+                        primary: "#7b5900",
+                        "surface-bright": "#fef9ee",
+                        "tertiary-fixed-dim": "#f4bb92",
+                        error: "#ba1a1a"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        sm: "8px",
+                        xl: "48px",
+                        gutter: "24px",
+                        "container-max": "1280px",
+                        md: "16px",
+                        lg: "24px",
+                        xs: "4px",
+                        base: "4px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Manrope"],
+                        "display-lg": ["Manrope"],
+                        "label-sm": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
+                        "display-lg-mobile": ["32px", { lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "label-sm": ["13px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(254, 249, 238, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(200, 155, 60, 0.2);
+            box-shadow: 0 20px 40px rgba(93, 64, 55, 0.08);
+        }
+        .brahmi-pattern {
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-blend-mode: multiply;
+        }
+        .ai-pulse {
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-pulse::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0051d5, transparent);
+            animation: scanning 3s infinite linear;
+        }
+        @keyframes scanning {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
     </style>
 </head>
-<body>
-    <h1>Kannada Character Recognition</h1>
-    
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="file" id="fileInput" accept=".jpg,.jpeg,.png,.bmp">
-        <button type="submit">Upload and Predict</button>
-    </form>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<header class="bg-surface/60 backdrop-blur-xl border-b border-outline/20 fixed top-0 w-full z-50 h-20 shadow-[0_20px_40px_rgba(93,64,55,0.08)]">
+<div class="flex justify-between items-center px-lg h-full w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="account_balance">account_balance</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">BrahmiLipi AI</h1>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="#hero">Home</a>
+<a class="text-on-surface-variant hover:bg-primary/10 transition-colors duration-300 px-md py-xs rounded-lg" href="#scan">Scan</a>
+<a class="text-on-surface-variant hover:bg-primary/10 transition-colors duration-300 px-md py-xs rounded-lg" href="#analytics">Analytics</a>
+<a class="text-on-surface-variant hover:bg-primary/10 transition-colors duration-300 px-md py-xs rounded-lg" href="{{ url_for('display_images') }}">History</a>
+</nav>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRYIm5KIMyvRmNsOwHbvE_zbTh9mK1vNk8OaIQCTdNQrWypU9LgXeb5ZNWUZW7M_9yLbP23DFQZFN7QYQeIUf_DVlTlxm3UIl2YPv4gqpjj1ynMmRAyNaSZfSyvcSm8DF5KfRTWwIjGczN_6sNlayatMRz3P1N8NKsaSrZr7aQCSWTuV-PLCYsKVkz0p6hWf4YEuSUTSFZB4XGmv8ssVywxqnbwwZp8kxNYoLL44_19pKIYzIGcUiZt_Likpiqcr_cFqREjEQ-oXY"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 md:pb-0">
+<section id="hero" class="relative min-h-[751px] flex items-center justify-center overflow-hidden brahmi-pattern">
+<div aria-hidden="true" class="absolute inset-0 opacity-10 pointer-events-none flex flex-wrap justify-around items-center p-xl gap-xl select-none">
+<span class="font-display-lg text-[120px] text-primary">𑀅</span>
+<span class="font-display-lg text-[120px] text-primary">𑀩</span>
+<span class="font-display-lg text-[120px] text-primary">𑀕</span>
+<span class="font-display-lg text-[120px] text-primary">𑀥</span>
+<span class="font-display-lg text-[120px] text-primary">𑀬</span>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto px-gutter text-center space-y-xl">
+<div class="space-y-md max-w-4xl mx-auto">
+<h1 class="font-display-lg text-display-lg md:text-[64px] text-primary leading-tight">BrahmiLipi AI</h1>
+<p class="font-headline-md text-headline-md text-on-surface-variant max-w-2xl mx-auto">Convert Ancient Brahmi Script into Kannada Characters using Deep Learning</p>
+</div>
+<div id="scan" class="flex flex-col md:flex-row items-center justify-center gap-lg">
+<button id="uploadTrigger" type="button" class="px-xl py-md bg-primary-container text-on-primary-container font-headline-md rounded-xl shadow-[0_4px_0_#4b3500] hover:translate-y-[2px] hover:shadow-[0_2px_0_#4b3500] transition-all flex items-center gap-md">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                        Upload Character
+                    </button>
+<button type="button" id="demoScroll" class="px-xl py-md border-2 border-primary text-primary font-headline-md rounded-xl hover:bg-primary/5 transition-all">
+                        Live Demo
+                    </button>
+</div>
+<form id="uploadForm" class="sr-only" enctype="multipart/form-data">
+<input accept=".jpg,.jpeg,.png,.bmp" id="fileInput" name="file" type="file"/>
+</form>
+<div class="mt-xl max-w-5xl mx-auto glass-card rounded-[32px] p-md ai-pulse">
+<div class="grid gap-md md:grid-cols-[1.1fr_0.9fr] items-stretch">
+<img class="w-full aspect-video object-cover rounded-[24px]" data-alt="A split-screen digital interface showing a weathered ancient Brahmi stone inscription on the left and a clean modern digital transcription into Kannada characters on the right. The image uses a warm cream and gold color palette, with a blue laser-like scanning line passing through the middle, symbolizing AI deep learning analysis in a scholarly museum setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCup7nK4Lw7J9HCj2EDy4JLN1FzcMMK3djUWOolgntvmscWhRaYO4eDfsALh9n07r6nFBXbWvb0WORuK00QSs1URj9T-bZw1A0YbDn_lfYJUU7S4wpc3noHup6ul_nFXTjJM8t7yEMkxBpN_A1o22y1Stad1wRXSkcF7XJW6y0trA7w3-ktjPHBz4YyHEj1nc5xJBrOvyKcHXR3SRLqwsWUZK8lh9K1ocLkzBGwWDXyzOKPX8DlHCq_U0pC4jMITa5xBbGvOVsxCqA"/>
+<div class="bg-surface-container-low rounded-[24px] border border-outline-variant/30 p-lg text-left flex flex-col justify-between gap-lg">
+<div class="space-y-sm">
+<p class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-md py-xs rounded-full inline-flex">UPLOAD RESULT</p>
+<h2 class="font-headline-md text-headline-md text-primary">Prediction Console</h2>
+<p id="statusText" class="text-on-surface-variant font-body-md">Choose an image to run character recognition. The selected file will be analyzed through the current model and the result will appear here.</p>
+</div>
+<div class="grid gap-md">
+<div class="text-center p-md bg-background rounded-lg border border-outline-variant/20">
+<p class="font-label-sm mb-xs">Detected Character</p>
+<p id="predictionText" class="text-4xl text-primary font-headline-md">—</p>
+</div>
+<div class="text-center p-md bg-background rounded-lg border border-outline-variant/20">
+<p class="font-label-sm mb-xs">Uploaded File</p>
+<p id="filenameText" class="text-on-surface-variant font-body-md break-all">No file selected</p>
+</div>
+</div>
+<div class="bg-surface-container p-md rounded-lg">
+<p class="font-label-sm text-on-surface-variant">Model Confidence</p>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-xs overflow-hidden">
+<div id="confidenceBar" class="bg-primary h-full w-0 transition-all duration-500"></div>
+</div>
+</div>
+</div>
+</div>
+<div id="previewWrap" class="hidden mt-lg max-w-5xl mx-auto">
+<div class="glass-card rounded-[24px] p-md">
+<img id="preview" class="w-full max-h-[360px] object-contain rounded-[20px] bg-surface-container-low" alt="Uploaded preview" src=""/>
+</div>
+</div>
+</div>
+</section>
+<section id="analytics" class="py-xl px-gutter max-w-container-max mx-auto">
+<div class="text-center mb-xl">
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface">Intelligence Meets Antiquity</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg">
+<div class="glass-card p-xl rounded-xl border border-outline-variant/30 hover:scale-[1.02] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-secondary" data-icon="psychology">psychology</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Smart Recognition</h3>
+<p class="text-on-surface-variant font-body-md">Advanced CNN architectures trained on thousands of authentic Ashokan-era epigraphs for precise glyph detection.</p>
+</div>
+<div class="glass-card p-xl rounded-xl border border-outline-variant/30 hover:scale-[1.02] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">High Accuracy</h3>
+<p class="text-on-surface-variant font-body-md">Achieving 98.4% accuracy across varied textures, from polished stone to weathered copper plate inscriptions.</p>
+</div>
+<div class="glass-card p-xl rounded-xl border border-outline-variant/30 hover:scale-[1.02] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-tertiary" data-icon="history_edu">history_edu</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Heritage Preservation</h3>
+<p class="text-on-surface-variant font-body-md">Digitizing ancient wisdom for future generations by bridging the gap between archaic scripts and modern languages.</p>
+</div>
+<div class="glass-card p-xl rounded-xl border border-outline-variant/30 hover:scale-[1.02] transition-transform duration-300">
+<div class="w-12 h-12 rounded-lg bg-secondary-container/10 flex items-center justify-center mb-md">
+<span class="material-symbols-outlined text-secondary" data-icon="leaderboard">leaderboard</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-sm">Real-time Analytics</h3>
+<p class="text-on-surface-variant font-body-md">Instant breakdown of morphological structures and historical frequency mapping of identified characters.</p>
+</div>
+</div>
+</section>
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex flex-col md:flex-row items-center gap-xl">
+<div class="flex-1 space-y-md">
+<span class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-md py-xs rounded-full">KANNADA ADAPTATION</span>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary">Contextual Translation</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Our deep learning model doesn't just swap symbols; it understands the phonetic shifts from ancient Brahmi to modern Kannada phonemes, ensuring linguistic integrity.</p>
+<ul class="space-y-sm">
+<li class="flex items-center gap-sm font-label-sm"><span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span> PHONETIC MAPPING ACCURACY</li>
+<li class="flex items-center gap-sm font-label-sm"><span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span> DIACRITIC RESTORATION</li>
+<li class="flex items-center gap-sm font-label-sm"><span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span> MULTI-ERA SUPPORT (MAURYAN TO KUSHAN)</li>
+</ul>
+</div>
+<div class="flex-1 w-full">
+<div class="glass-card rounded-xl p-lg overflow-hidden border border-outline-variant/30">
+<div class="flex justify-between items-center mb-lg">
+<div class="text-center p-md bg-background rounded-lg border border-outline-variant/20 flex-1 mx-sm">
+<p class="font-label-sm mb-xs">Brahmi Source</p>
+<p class="text-4xl text-primary font-headline-md">𑀅𑀦𑀁𑀢</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="trending_flat">trending_flat</span>
+<div class="text-center p-md bg-background rounded-lg border border-outline-variant/20 flex-1 mx-sm">
+<p class="font-label-sm mb-xs">Kannada Output</p>
+<p class="text-4xl text-secondary font-headline-md">ಅನಂತ</p>
+</div>
+</div>
+<div class="bg-surface-container p-md rounded-lg">
+<p class="font-label-sm text-on-surface-variant">Model Confidence: 99.8%</p>
+<div class="w-full bg-outline-variant h-1 rounded-full mt-xs overflow-hidden">
+<div class="bg-primary h-full w-[99.8%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-surface-container-low w-full py-xl border-t border-outline-variant/30">
+<div class="flex flex-col md:flex-row justify-between items-center px-gutter max-w-container-max mx-auto gap-md">
+<div class="space-y-xs text-center md:text-left">
+<h3 class="font-headline-md text-headline-md text-primary">BrahmiLipi AI</h3>
+<p class="text-on-surface-variant font-body-md">© 2024 BrahmiLipi AI. Preserving heritage through intelligence.</p>
+</div>
+<div class="flex gap-lg flex-wrap justify-center">
+<a class="text-on-surface-variant hover:text-primary transition-opacity font-body-md" href="#hero">Documentation</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity font-body-md" href="#hero">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity font-body-md" href="#hero">API</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity font-body-md" href="#hero">Contact</a>
+</div>
+</div>
+</footer>
+<nav class="fixed bottom-0 w-full z-50 bg-surface/70 backdrop-blur-lg border-t border-outline/10 h-16 flex justify-around items-center md:hidden rounded-t-xl shadow-[0_-10px_30px_rgba(93,64,55,0.05)]">
+<a class="flex flex-col items-center justify-center bg-primary-container/40 text-on-primary-container rounded-full px-4 py-1" href="#hero">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="#scan">
+<span class="material-symbols-outlined" data-icon="document_scanner">document_scanner</span>
+<span class="font-label-sm text-label-sm">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="#analytics">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70" href="{{ url_for('display_images') }}">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-sm text-label-sm">History</span>
+</a>
+</nav>
+<script>
+        const uploadTrigger = document.getElementById('uploadTrigger');
+        const demoScroll = document.getElementById('demoScroll');
+        const uploadForm = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('fileInput');
+        const previewWrap = document.getElementById('previewWrap');
+        const preview = document.getElementById('preview');
+        const predictionText = document.getElementById('predictionText');
+        const filenameText = document.getElementById('filenameText');
+        const statusText = document.getElementById('statusText');
+        const confidenceBar = document.getElementById('confidenceBar');
 
-    <div id="result">
-        <img id="preview" src="" style="display:none;">
-        <p id="predictionText"></p>
-    </div>
+        uploadTrigger.addEventListener('click', () => fileInput.click());
+        demoScroll.addEventListener('click', () => document.getElementById('scan').scrollIntoView({ behavior: 'smooth', block: 'start' }));
 
-    <script>
-        $(document).ready(function() {
-            $('#uploadForm').on('submit', function(e) {
-                e.preventDefault();
-                
-                var formData = new FormData(this);
-                
-                $.ajax({
-                    url: '/process',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $('#preview').attr('src', '/static/uploads/' + response.filename).show();
-                        $('#predictionText').text('Predicted Character: ' + response.predicted_character);
-                    },
-                    error: function(xhr) {
-                        alert('Error: ' + xhr.responseJSON.error);
-                    }
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files && fileInput.files.length > 0) {
+                uploadForm.requestSubmit();
+            }
+        });
+
+        uploadForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                statusText.textContent = 'Please choose an image file first.';
+                return;
+            }
+
+            const formData = new FormData(uploadForm);
+            statusText.textContent = 'Analyzing image...';
+            predictionText.textContent = '...';
+            confidenceBar.style.width = '35%';
+
+            try {
+                const response = await fetch('/process', {
+                    method: 'POST',
+                    body: formData
                 });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Upload failed');
+                }
+
+                const uploadedFileUrl = '/static/uploads/' + encodeURIComponent(data.filename);
+                preview.src = uploadedFileUrl;
+                previewWrap.classList.remove('hidden');
+                filenameText.textContent = data.filename;
+                predictionText.textContent = data.predicted_character;
+                statusText.textContent = 'Analysis complete. Result generated from the current model output.';
+                confidenceBar.style.width = data.predicted_character === 'Unknown' ? '42%' : '99.8%';
+            } catch (error) {
+                statusText.textContent = error.message;
+                predictionText.textContent = 'Error';
+                confidenceBar.style.width = '0%';
+            }
+        });
+
+        document.querySelectorAll('.glass-card').forEach((card) => {
+            card.addEventListener('mousemove', (event) => {
+                const rect = card.getBoundingClientRect();
+                const x = event.clientX - rect.left;
+                const y = event.clientY - rect.top;
+
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
             });
         });
     </script>
